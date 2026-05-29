@@ -92,9 +92,10 @@
       <svg id="storyVis" width="200" height="170" viewBox="0 0 200 170"></svg>
       <div class="story-video" id="storyVideo" style="display:none">
         <div class="vid-wrap" id="vidWrap">
-          <video id="vid" playsinline preload="metadata" muted loop>
+          <video id="vid" playsinline webkit-playsinline preload="metadata" muted loop>
             <source src="assets/media/interview_Michel_De_Vreeze.mp4" type="video/mp4" />
           </video>
+          <button class="vid-play" id="vidPlay" aria-label="Play or pause"></button>
           <button class="vid-btn vid-mute" id="vidMute" aria-label="Toggle sound"></button>
           <button class="vid-btn vid-full" id="vidFull" aria-label="Toggle fullscreen"></button>
         </div>

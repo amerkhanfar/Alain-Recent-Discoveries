@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { SFX } from './sfx.js';
 
 /* =========================================================================
    1. TRANSLATIONS  (full English / Arabic)
@@ -202,8 +203,8 @@ function setStory(i) {
     svg.innerHTML = DRAW[i](s.cap);   // re-inject markup to replay entrance animations
   }
 }
-const nextStory = () => setStory((storyIdx + 1) % 4);
-const prevStory = () => setStory((storyIdx + 3) % 4);
+const nextStory = () => { setStory((storyIdx + 1) % 4); SFX.step(storyIdx); };
+const prevStory = () => { setStory((storyIdx + 3) % 4); SFX.step(storyIdx); };
 
 /* =========================================================================
    4. PAGE NAVIGATION
@@ -216,7 +217,7 @@ function goTo(id) {
   if (id !== 'story-page') {
     const v = document.getElementById('vid');
     if (v) v.pause();
-    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    if (isFs()) exitFs();
   }
   if (id === 'story-page') setStory(0);
   fitToScreen();
@@ -276,6 +277,7 @@ function floatAnim() {
 function triggerReveal() {
   if (revealed || animating) return;
   animating = true;
+  SFX.reveal();
   document.getElementById('tapCue').classList.add('hide');
   const targets = blocks.map(() => ({
     tx: (Math.random() - .5) * 500, ty: (Math.random() - .5) * 500, tr: (Math.random() - .5) * 3
@@ -496,25 +498,27 @@ function fitToScreen() {
    8. WIRE-UP
    ========================================================================= */
 document.getElementById('canvasWrap').addEventListener('click', triggerReveal);
-document.getElementById('startEn').addEventListener('click', () => { applyLang('en'); goTo('object-page'); });
-document.getElementById('startAr').addEventListener('click', () => { applyLang('ar'); goTo('object-page'); });
-document.getElementById('lEn').addEventListener('click', () => applyLang('en'));
-document.getElementById('lAr').addEventListener('click', () => applyLang('ar'));
-document.getElementById('toStory').addEventListener('click', () => goTo('story-page'));
+document.getElementById('startEn').addEventListener('click', () => { SFX.chime(); applyLang('en'); goTo('object-page'); });
+document.getElementById('startAr').addEventListener('click', () => { SFX.chime(); applyLang('ar'); goTo('object-page'); });
+document.getElementById('lEn').addEventListener('click', () => { SFX.click(); applyLang('en'); });
+document.getElementById('lAr').addEventListener('click', () => { SFX.click(); applyLang('ar'); });
+document.getElementById('toStory').addEventListener('click', () => { SFX.transition(); goTo('story-page'); });
 document.getElementById('storyPrev').addEventListener('click', prevStory);
 document.getElementById('storyNext').addEventListener('click', nextStory);
-document.querySelector('#object-page .back-btn').addEventListener('click', () => goTo('home'));
-document.querySelector('#story-page .back-btn').addEventListener('click', () => goTo('object-page'));
-document.querySelector('.home-return').addEventListener('click', () => goTo('home'));
+document.querySelector('#object-page .back-btn').addEventListener('click', () => { SFX.back(); goTo('home'); });
+document.querySelector('#story-page .back-btn').addEventListener('click', () => { SFX.back(); goTo('object-page'); });
+document.querySelector('.home-return').addEventListener('click', () => { SFX.back(); goTo('home'); });
 document.querySelectorAll('.t-dot[data-story]').forEach(d =>
-  d.addEventListener('click', () => setStory(+d.getAttribute('data-story'))));
+  d.addEventListener('click', () => { setStory(+d.getAttribute('data-story')); SFX.step(storyIdx); }));
 
 /* ── Step-2 interview video controls ── */
 const ICONS = {
   vol:  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/><path d="M14 3.2v2.1a6.5 6.5 0 0 1 0 13.4v2.1a8.5 8.5 0 0 0 0-17.6z"/></svg>',
   mute: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M22 9.4 20.6 8 18 10.6 15.4 8 14 9.4 16.6 12 14 14.6 15.4 16 18 13.4 20.6 16 22 14.6 19.4 12 22 9.4z"/></svg>',
   full: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 9V4h5v2H6v3H4zm11-5h5v5h-2V6h-3V4zM6 15v3h3v2H4v-5h2zm12 0h2v5h-5v-2h3v-3z"/></svg>',
-  exit: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 7V4h2v5H4V7h3zm10 0h3v2h-5V4h2v3zM7 17H4v-2h5v5H7v-3zm10 0v3h-2v-5h5v2h-3z"/></svg>'
+  exit: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 7V4h2v5H4V7h3zm10 0h3v2h-5V4h2v3zM7 17H4v-2h5v5H7v-3zm10 0v3h-2v-5h5v2h-3z"/></svg>',
+  play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>',
+  pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>'
 };
 const vidEl   = document.getElementById('vid');
 const vidWrap = document.getElementById('vidWrap');
@@ -522,20 +526,66 @@ const muteBtn = document.getElementById('vidMute');
 const fullBtn = document.getElementById('vidFull');
 
 function syncMuteIcon() { if (muteBtn) muteBtn.innerHTML = vidEl.muted ? ICONS.mute : ICONS.vol; }
-function syncFullIcon() { if (fullBtn) fullBtn.innerHTML = document.fullscreenElement ? ICONS.exit : ICONS.full; }
+
+/* ---- cross-browser / iOS-safe fullscreen ----
+   iOS Safari has no Element.requestFullscreen — only the <video> element can go
+   fullscreen via the non-standard webkitEnterFullscreen() (native player). */
+function isFs() {
+  return !!(document.fullscreenElement || document.webkitFullscreenElement) ||
+         !!(vidEl && vidEl.webkitDisplayingFullscreen);
+}
+function enterFs() {
+  if (vidWrap.requestFullscreen)       return vidWrap.requestFullscreen().catch(() => {});
+  if (vidWrap.webkitRequestFullscreen) return vidWrap.webkitRequestFullscreen();
+  if (vidEl && vidEl.webkitEnterFullscreen) { try { vidEl.webkitEnterFullscreen(); } catch (e) {} }
+}
+function exitFs() {
+  if (document.exitFullscreen)             return document.exitFullscreen().catch(() => {});
+  if (document.webkitExitFullscreen)       return document.webkitExitFullscreen();
+  if (vidEl && vidEl.webkitExitFullscreen) { try { vidEl.webkitExitFullscreen(); } catch (e) {} }
+}
+function syncFullIcon() { if (fullBtn) fullBtn.innerHTML = isFs() ? ICONS.exit : ICONS.full; }
+
 syncMuteIcon();
 syncFullIcon();
 
 if (muteBtn) muteBtn.addEventListener('click', () => {
+  SFX.click();
   vidEl.muted = !vidEl.muted;
   if (!vidEl.muted) { const p = vidEl.play(); if (p && p.catch) p.catch(() => {}); }
   syncMuteIcon();
 });
-if (fullBtn) fullBtn.addEventListener('click', () => {
-  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-  else if (vidWrap.requestFullscreen) vidWrap.requestFullscreen().catch(() => {});
+if (fullBtn) fullBtn.addEventListener('click', () => { SFX.click(); if (isFs()) exitFs(); else enterFs(); });
+['fullscreenchange', 'webkitfullscreenchange'].forEach(ev => document.addEventListener(ev, syncFullIcon));
+if (vidEl) {
+  vidEl.addEventListener('webkitbeginfullscreen', syncFullIcon);
+  vidEl.addEventListener('webkitendfullscreen', syncFullIcon);
+}
+
+/* ---- center play / pause button: auto-hides after 3s of playback ---- */
+const playBtn = document.getElementById('vidPlay');
+let hideTimer = null;
+function syncPlayIcon() { if (playBtn) playBtn.innerHTML = vidEl.paused ? ICONS.play : ICONS.pause; }
+function showControls() {
+  vidWrap.classList.remove('controls-hidden');
+  clearTimeout(hideTimer);
+  // only fade away while the video is actually running; when paused the
+  // "continue" button stays put so the viewer can find it
+  if (vidEl && !vidEl.paused) hideTimer = setTimeout(() => vidWrap.classList.add('controls-hidden'), 3000);
+}
+syncPlayIcon();
+if (playBtn) playBtn.addEventListener('click', () => {
+  SFX.click();
+  if (vidEl.paused) { const p = vidEl.play(); if (p && p.catch) p.catch(() => {}); }
+  else vidEl.pause();
 });
-document.addEventListener('fullscreenchange', syncFullIcon);
+if (vidEl) {
+  vidEl.addEventListener('play',  () => { syncPlayIcon(); showControls(); });
+  vidEl.addEventListener('pause', () => { syncPlayIcon(); showControls(); });
+}
+// bring controls back on hover / touch / movement, then restart the 3s countdown
+['pointerdown', 'pointermove', 'mouseenter', 'touchstart'].forEach(ev =>
+  vidWrap.addEventListener(ev, showControls, { passive: true }));
 
 // If the video file is missing/unsupported, fall back to the animated SVG for step 2.
 if (vidEl) vidEl.addEventListener('error', () => {
@@ -544,6 +594,14 @@ if (vidEl) vidEl.addEventListener('error', () => {
 });
 
 window.addEventListener('resize', fitToScreen);
+
+/* unlock the audio context on the very first user interaction (autoplay policy) */
+function unlockAudioOnce() {
+  SFX.unlock();
+  ['pointerdown', 'touchstart', 'keydown'].forEach(ev => window.removeEventListener(ev, unlockAudioOnce, true));
+}
+['pointerdown', 'touchstart', 'keydown'].forEach(ev =>
+  window.addEventListener(ev, unlockAudioOnce, { capture: true, passive: true }));
 
 /* boot */
 makeBlocks();

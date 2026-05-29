@@ -156,7 +156,7 @@ html,body{
 .story-video{width:100%;display:flex;align-items:center;justify-content:center;}
 .vid-wrap{position:relative;line-height:0;display:inline-block;border-radius:8px;overflow:hidden;background:#000;box-shadow:0 6px 22px rgba(58,36,21,.22);}
 .vid-wrap video{display:block;max-width:330px;max-height:206px;width:100%;height:auto;}
-.vid-btn{position:absolute;bottom:9px;width:30px;height:30px;border-radius:50%;border:none;background:rgba(58,36,21,.6);color:#EAE3D2;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:background .2s,transform .15s;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);}
+.vid-btn{position:absolute;bottom:9px;width:30px;height:30px;border-radius:50%;border:none;background:rgba(58,36,21,.6);color:#EAE3D2;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:background .2s,transform .15s,opacity .4s ease;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);}
 .vid-btn:hover{background:rgba(58,36,21,.92);transform:scale(1.08);}
 .vid-btn:active{transform:scale(.94);}
 .vid-btn svg{width:15px;height:15px;display:block;}
@@ -168,3 +168,13 @@ html,body{
 .vid-wrap:fullscreen .vid-btn svg{width:24px;height:24px;}
 .vid-wrap:fullscreen .vid-mute{left:28px;}
 .vid-wrap:fullscreen .vid-full{right:28px;}
+
+/* center play / pause button — auto-hides after 3s of playback, returns on hover/touch */
+.vid-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;border:none;background:rgba(58,36,21,.6);color:#EAE3D2;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);transition:background .2s,transform .15s,opacity .45s ease;box-shadow:0 3px 14px rgba(0,0,0,.32);}
+.vid-play svg{width:26px;height:26px;display:block;}
+.vid-play:hover{background:rgba(58,36,21,.92);}
+.vid-play:active{transform:translate(-50%,-50%) scale(.9);}
+.vid-wrap.controls-hidden .vid-play,
+.vid-wrap.controls-hidden .vid-btn{opacity:0;pointer-events:none;}
+.vid-wrap:fullscreen .vid-play{width:88px;height:88px;}
+.vid-wrap:fullscreen .vid-play svg{width:40px;height:40px;}
