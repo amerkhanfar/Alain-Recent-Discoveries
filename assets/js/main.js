@@ -75,6 +75,7 @@ const STORIES = {
 let lang = 'en';
 let storyIdx = 0;
 let currentPage = 'home';
+let videoFailed = false;
 
 /* =========================================================================
    2. LANGUAGE
@@ -124,48 +125,55 @@ function setText(id, v) { const el = document.getElementById(id); if (el) el.tex
 /* =========================================================================
    3. STORY (timeline + localized SVG illustrations)
    ========================================================================= */
-function svgCaption(x, y, text, size = 10) {
-  return `<text x="${x}" y="${y}" text-anchor="middle" font-size="${size}" fill="#5C4A32" font-family="Arial,sans-serif" letter-spacing=".06em">${text}</text>`;
+function svgCaption(x, y, text, delay = 0.8) {
+  return `<text class="anim-fade" style="animation-delay:${delay}s" x="${x}" y="${y}" text-anchor="middle" font-size="10" fill="#5C4A32" font-family="Arial,sans-serif" letter-spacing=".06em">${text}</text>`;
 }
+/* Each shape that carries its own transform attribute (rotated rects) is wrapped
+   in a <g> so the CSS keyframe transform animates the group while the inner
+   element keeps its rotate(). Staggered animation-delays build each scene up. */
 const DRAW = [
+  // 0 — Quarried: the bedrock rises, then loose blocks drop & stack
   (cap) => `
-    <rect x="20" y="100" width="160" height="50" rx="4" fill="#C4AD8A" opacity=".5"/>
-    <rect x="10" y="80" width="70" height="40" rx="3" fill="#A8926E" opacity=".8"/>
-    <rect x="90" y="60" width="55" height="55" rx="3" fill="#C4AD8A" opacity=".9"/>
-    <rect x="50" y="50" width="40" height="30" rx="2" fill="#8B7355" opacity=".7" transform="rotate(-12,70,65)"/>
-    <rect x="130" y="45" width="35" height="25" rx="2" fill="#A8926E" opacity=".6" transform="rotate(8,147,57)"/>
-    ${svgCaption(100, 167, cap)}`,
+    <g class="anim-rise"  style="animation-delay:0s"><rect x="20" y="100" width="160" height="50" rx="4" fill="#C4AD8A" opacity=".5"/></g>
+    <g class="anim-drop"  style="animation-delay:.15s"><rect x="10" y="80" width="70" height="40" rx="3" fill="#A8926E" opacity=".8"/></g>
+    <g class="anim-drop"  style="animation-delay:.3s"><rect x="90" y="60" width="55" height="55" rx="3" fill="#C4AD8A" opacity=".9"/></g>
+    <g class="anim-drop"  style="animation-delay:.45s"><rect x="50" y="50" width="40" height="30" rx="2" fill="#8B7355" opacity=".7" transform="rotate(-12,70,65)"/></g>
+    <g class="anim-drop"  style="animation-delay:.58s"><rect x="130" y="45" width="35" height="25" rx="2" fill="#A8926E" opacity=".6" transform="rotate(8,147,57)"/></g>
+    ${svgCaption(100, 167, cap, .8)}`,
+  // 1 — Carved (SVG fallback if the video can't load): stone rises & breathes, chisel marks draw in
   (cap) => `
-    <rect x="70" y="10" width="60" height="90" rx="6" fill="#C4AD8A"/>
-    <ellipse cx="100" cy="65" rx="18" ry="22" fill="#EAE3D2"/>
-    <rect x="82" y="87" width="36" height="25" rx="3" fill="#EAE3D2"/>
-    <line x1="45" y1="40" x2="68" y2="55" stroke="#8B7355" stroke-width="2"/>
-    <line x1="155" y1="38" x2="132" y2="53" stroke="#8B7355" stroke-width="2"/>
-    <circle cx="45" cy="38" r="5" fill="#8B7355" opacity=".6"/>
-    <circle cx="155" cy="36" r="5" fill="#8B7355" opacity=".6"/>
-    ${svgCaption(100, 130, cap)}`,
+    <g class="anim-rise-float" style="animation-delay:0s"><rect x="70" y="10" width="60" height="90" rx="6" fill="#C4AD8A"/></g>
+    <g class="anim-pop" style="animation-delay:.32s"><ellipse cx="100" cy="65" rx="18" ry="22" fill="#EAE3D2"/></g>
+    <g class="anim-pop" style="animation-delay:.46s"><rect x="82" y="87" width="36" height="25" rx="3" fill="#EAE3D2"/></g>
+    <line class="anim-draw" style="animation-delay:.55s" pathLength="1" x1="45" y1="40" x2="68" y2="55" stroke="#8B7355" stroke-width="2"/>
+    <line class="anim-draw" style="animation-delay:.68s" pathLength="1" x1="155" y1="38" x2="132" y2="53" stroke="#8B7355" stroke-width="2"/>
+    <g class="anim-pop" style="animation-delay:.82s"><circle cx="45" cy="38" r="5" fill="#8B7355" opacity=".6"/></g>
+    <g class="anim-pop" style="animation-delay:.92s"><circle cx="155" cy="36" r="5" fill="#8B7355" opacity=".6"/></g>
+    ${svgCaption(100, 130, cap, 1)}`,
+  // 2 — Placed: ground shadow fades in, doorstone settles, ropes & people pop into place
   (cap) => `
-    <ellipse cx="100" cy="150" rx="80" ry="12" fill="#C4AD8A" opacity=".4"/>
-    <rect x="72" y="30" width="56" height="100" rx="5" fill="#C4AD8A"/>
-    <ellipse cx="100" cy="85" rx="17" ry="21" fill="#EAE3D2"/>
-    <rect x="83" y="106" width="34" height="22" rx="3" fill="#EAE3D2"/>
-    <line x1="20" y1="70" x2="68" y2="80" stroke="#8B7355" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <line x1="180" y1="70" x2="132" y2="80" stroke="#8B7355" stroke-width="1.5" stroke-dasharray="4,3"/>
-    <circle cx="20" cy="70" r="4" fill="#8B7355" opacity=".5"/>
-    <circle cx="180" cy="70" r="4" fill="#8B7355" opacity=".5"/>
-    <circle cx="55" cy="130" r="4" fill="#8B7355" opacity=".5"/>
-    <circle cx="145" cy="130" r="4" fill="#8B7355" opacity=".5"/>
-    ${svgCaption(100, 168, cap)}`,
+    <g class="anim-fade" style="animation-delay:0s"><ellipse cx="100" cy="150" rx="80" ry="12" fill="#C4AD8A" opacity=".4"/></g>
+    <g class="anim-rise-float" style="animation-delay:.1s"><rect x="72" y="30" width="56" height="100" rx="5" fill="#C4AD8A"/></g>
+    <g class="anim-pop" style="animation-delay:.42s"><ellipse cx="100" cy="85" rx="17" ry="21" fill="#EAE3D2"/></g>
+    <g class="anim-pop" style="animation-delay:.52s"><rect x="83" y="106" width="34" height="22" rx="3" fill="#EAE3D2"/></g>
+    <line class="anim-fade" style="animation-delay:.3s" x1="20" y1="70" x2="68" y2="80" stroke="#8B7355" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <line class="anim-fade" style="animation-delay:.4s" x1="180" y1="70" x2="132" y2="80" stroke="#8B7355" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <g class="anim-pop" style="animation-delay:.55s"><circle cx="20" cy="70" r="4" fill="#8B7355" opacity=".5"/></g>
+    <g class="anim-pop" style="animation-delay:.64s"><circle cx="180" cy="70" r="4" fill="#8B7355" opacity=".5"/></g>
+    <g class="anim-pop" style="animation-delay:.73s"><circle cx="55" cy="130" r="4" fill="#8B7355" opacity=".5"/></g>
+    <g class="anim-pop" style="animation-delay:.82s"><circle cx="145" cy="130" r="4" fill="#8B7355" opacity=".5"/></g>
+    ${svgCaption(100, 168, cap, .95)}`,
+  // 3 — Lives on: tomb fades in, generations (people) gently pulse / breathe
   (cap) => `
-    <rect x="72" y="20" width="56" height="100" rx="5" fill="#C4AD8A" opacity=".6"/>
-    <ellipse cx="100" cy="75" rx="17" ry="21" fill="#EAE3D2"/>
-    <rect x="83" y="96" width="34" height="22" rx="3" fill="#EAE3D2"/>
-    <circle cx="55" cy="145" r="7" fill="#A8926E" opacity=".5"/>
-    <circle cx="75" cy="152" r="5" fill="#8B7355" opacity=".4"/>
-    <circle cx="125" cy="152" r="5" fill="#8B7355" opacity=".4"/>
-    <circle cx="145" cy="145" r="7" fill="#A8926E" opacity=".5"/>
-    <circle cx="100" cy="155" r="6" fill="#8B7355" opacity=".6"/>
-    ${svgCaption(100, 170, cap)}`
+    <g class="anim-fade" style="animation-delay:0s"><rect x="72" y="20" width="56" height="100" rx="5" fill="#C4AD8A" opacity=".6"/></g>
+    <g class="anim-fade" style="animation-delay:.2s"><ellipse cx="100" cy="75" rx="17" ry="21" fill="#EAE3D2"/></g>
+    <g class="anim-fade" style="animation-delay:.3s"><rect x="83" y="96" width="34" height="22" rx="3" fill="#EAE3D2"/></g>
+    <g class="anim-pulse" style="animation-delay:.4s"><circle cx="55" cy="145" r="7" fill="#A8926E"/></g>
+    <g class="anim-pulse" style="animation-delay:.55s"><circle cx="75" cy="152" r="5" fill="#8B7355"/></g>
+    <g class="anim-pulse" style="animation-delay:.68s"><circle cx="125" cy="152" r="5" fill="#8B7355"/></g>
+    <g class="anim-pulse" style="animation-delay:.8s"><circle cx="145" cy="145" r="7" fill="#A8926E"/></g>
+    <g class="anim-pulse" style="animation-delay:.92s"><circle cx="100" cy="155" r="6" fill="#8B7355"/></g>
+    ${svgCaption(100, 170, cap, 1)}`
 ];
 
 function setStory(i) {
@@ -178,7 +186,21 @@ function setStory(i) {
     const td = j === 0 ? document.querySelector('.t-dot[data-story="0"]') : document.getElementById('td' + j);
     if (td) td.className = 't-dot' + (j === i ? ' on' : '');
   }
-  document.getElementById('storyVis').innerHTML = DRAW[i](s.cap);
+
+  // Step 2 (index 1) plays the interview video; every other step shows its animated SVG.
+  const svg = document.getElementById('storyVis');
+  const vbox = document.getElementById('storyVideo');
+  const vid = document.getElementById('vid');
+  if (i === 1 && !videoFailed) {
+    svg.style.display = 'none';
+    vbox.style.display = 'flex';
+    if (vid) { const p = vid.play(); if (p && p.catch) p.catch(() => {}); }
+  } else {
+    if (vid) vid.pause();
+    vbox.style.display = 'none';
+    svg.style.display = 'block';
+    svg.innerHTML = DRAW[i](s.cap);   // re-inject markup to replay entrance animations
+  }
 }
 const nextStory = () => setStory((storyIdx + 1) % 4);
 const prevStory = () => setStory((storyIdx + 3) % 4);
@@ -190,6 +212,12 @@ function goTo(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   currentPage = id;
+  // leaving the story → stop the interview video and drop out of fullscreen
+  if (id !== 'story-page') {
+    const v = document.getElementById('vid');
+    if (v) v.pause();
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  }
   if (id === 'story-page') setStory(0);
   fitToScreen();
 }
@@ -307,8 +335,8 @@ function makeViewer(canvasEl, camZ) {
   return { renderer, scene, camera, pivot, model: null, active: false };
 }
 
-const homeViewer = makeViewer(document.getElementById('homeGl'), 3.25);
-const objViewer  = makeViewer(document.getElementById('objGl'), 2.95);
+const homeViewer = makeViewer(document.getElementById('homeGl'), 3.4);
+const objViewer  = makeViewer(document.getElementById('objGl'), 3.5);
 const viewers = [homeViewer, objViewer];
 let modelFailed = false;
 let pixelScale = 1;
@@ -368,8 +396,8 @@ new GLTFLoader().load(
 /* drag-to-rotate + scroll/pinch-to-zoom on the object viewer */
 const objCanvas = document.getElementById('objGl');
 let dragging = false, lastX = 0, lastY = 0, vel = 0;
-let objDist = 2.95;               // camera distance (zoom)
-const MIN_Z = 1.4, MAX_Z = 6.5;
+let objDist = 3.5;                // camera distance (zoom)
+const MIN_Z = 1.6, MAX_Z = 7;
 const pointersDown = new Map();   // active pointers for multi-touch
 let lastPinch = 0;
 
@@ -480,6 +508,40 @@ document.querySelector('#story-page .back-btn').addEventListener('click', () => 
 document.querySelector('.home-return').addEventListener('click', () => goTo('home'));
 document.querySelectorAll('.t-dot[data-story]').forEach(d =>
   d.addEventListener('click', () => setStory(+d.getAttribute('data-story'))));
+
+/* ── Step-2 interview video controls ── */
+const ICONS = {
+  vol:  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/><path d="M14 3.2v2.1a6.5 6.5 0 0 1 0 13.4v2.1a8.5 8.5 0 0 0 0-17.6z"/></svg>',
+  mute: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M22 9.4 20.6 8 18 10.6 15.4 8 14 9.4 16.6 12 14 14.6 15.4 16 18 13.4 20.6 16 22 14.6 19.4 12 22 9.4z"/></svg>',
+  full: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 9V4h5v2H6v3H4zm11-5h5v5h-2V6h-3V4zM6 15v3h3v2H4v-5h2zm12 0h2v5h-5v-2h3v-3z"/></svg>',
+  exit: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 7V4h2v5H4V7h3zm10 0h3v2h-5V4h2v3zM7 17H4v-2h5v5H7v-3zm10 0v3h-2v-5h5v2h-3z"/></svg>'
+};
+const vidEl   = document.getElementById('vid');
+const vidWrap = document.getElementById('vidWrap');
+const muteBtn = document.getElementById('vidMute');
+const fullBtn = document.getElementById('vidFull');
+
+function syncMuteIcon() { if (muteBtn) muteBtn.innerHTML = vidEl.muted ? ICONS.mute : ICONS.vol; }
+function syncFullIcon() { if (fullBtn) fullBtn.innerHTML = document.fullscreenElement ? ICONS.exit : ICONS.full; }
+syncMuteIcon();
+syncFullIcon();
+
+if (muteBtn) muteBtn.addEventListener('click', () => {
+  vidEl.muted = !vidEl.muted;
+  if (!vidEl.muted) { const p = vidEl.play(); if (p && p.catch) p.catch(() => {}); }
+  syncMuteIcon();
+});
+if (fullBtn) fullBtn.addEventListener('click', () => {
+  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+  else if (vidWrap.requestFullscreen) vidWrap.requestFullscreen().catch(() => {});
+});
+document.addEventListener('fullscreenchange', syncFullIcon);
+
+// If the video file is missing/unsupported, fall back to the animated SVG for step 2.
+if (vidEl) vidEl.addEventListener('error', () => {
+  videoFailed = true;
+  if (storyIdx === 1) setStory(1);
+});
 
 window.addEventListener('resize', fitToScreen);
 

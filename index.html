@@ -38,7 +38,7 @@
 
     <div class="home-btns" id="homeBtns" style="opacity:0;pointer-events:none;transition:opacity .5s;">
       <button class="btn-pill dark" id="startEn">START EXPLORING</button>
-      <button class="btn-pill" id="startAr" style="direction:rtl;font-family:Georgia,serif;font-size:15px;">ابدأ الاستكشاف</button>
+      <button class="btn-pill" id="startAr" style="direction:rtl;font-family:'Cairo',sans-serif;font-size:15px;">ابدأ الاستكشاف</button>
     </div>
   </div>
 
@@ -90,6 +90,15 @@
 
     <div class="story-vis">
       <svg id="storyVis" width="200" height="170" viewBox="0 0 200 170"></svg>
+      <div class="story-video" id="storyVideo" style="display:none">
+        <div class="vid-wrap" id="vidWrap">
+          <video id="vid" playsinline preload="metadata" muted loop>
+            <source src="assets/media/interview_Michel_De_Vreeze.mp4" type="video/mp4" />
+          </video>
+          <button class="vid-btn vid-mute" id="vidMute" aria-label="Toggle sound"></button>
+          <button class="vid-btn vid-full" id="vidFull" aria-label="Toggle fullscreen"></button>
+        </div>
+      </div>
     </div>
 
     <div class="story-body">
