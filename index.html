@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Recent Discoveries — Al Ain National Museum</title>
+<link rel="stylesheet" href="assets/css/style.css" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "./assets/libs/three.module.js",
+    "three/addons/": "./assets/libs/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+
+<div id="stage">
+<div id="app">
+
+  <!-- HOME PAGE -->
+  <div class="page active" id="home">
+    <div style="text-align:center;">
+      <div class="home-kicker" data-i18n="kicker">Al Ain National Museum</div>
+      <div class="home-title-en">Recent Discoveries</div>
+      <div class="home-title-ar">أحدث الاكتشافات</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+      <div class="canvas-wrap" id="canvasWrap">
+        <canvas id="blockCanvas" width="300" height="300"></canvas>
+        <canvas id="homeGl"></canvas>
+        <img id="homeFallback" alt="Stone Door artifact" />
+      </div>
+      <div class="tap-cue" id="tapCue" data-i18n="tapCue">Tap to reveal the discovery</div>
+    </div>
+
+    <div class="home-btns" id="homeBtns" style="opacity:0;pointer-events:none;transition:opacity .5s;">
+      <button class="btn-pill dark" id="startEn">START EXPLORING</button>
+      <button class="btn-pill" id="startAr" style="direction:rtl;font-family:Georgia,serif;font-size:15px;">ابدأ الاستكشاف</button>
+    </div>
+  </div>
+
+  <!-- OBJECT PAGE -->
+  <div class="page" id="object-page">
+    <div class="obj-header">
+      <button class="back-btn" data-back>←</button>
+      <div class="brand" data-i18n="brandDiscoveries">Recent<br>Discoveries</div>
+    </div>
+    <div class="obj-stage">
+      <canvas id="objGl"></canvas>
+      <img id="objFallback" alt="Stone Door" draggable="false" />
+      <div class="drag-hint" data-i18n="dragHint">↔ Drag to rotate</div>
+    </div>
+    <div class="obj-body">
+      <div class="discovery-label" data-i18n="discoveryLabel">Discovery of the Month</div>
+      <div class="obj-name" id="objName">The Doorstone of the 'Phoenix' Tomb</div>
+      <div class="divider"></div>
+      <div class="meta"><span class="meta-k" data-i18n="kDate">Date</span><span class="meta-v" id="vDate">c. 2300 BCE — Umm an-Nar period</span></div>
+      <div class="meta"><span class="meta-k" data-i18n="kMaterial">Material</span><span class="meta-v" id="vMaterial">Limestone, Jebel Haqlah</span></div>
+      <div class="meta"><span class="meta-k" data-i18n="kDimensions">Dimensions</span><span class="meta-v" id="vDimensions">126 × 73 × 20 cm</span></div>
+      <div class="meta"><span class="meta-k" data-i18n="kCollection">Collection</span><span class="meta-v" id="vCollection">Al Ain National Museum</span></div>
+      <div class="divider"></div>
+      <div id="desc" class="desc">A masterful stone mason sculpted this doorstone from a sizeable limestone block quarried at Jebel Haqlah over 4,300 years ago, to be placed at the entrance of a monumental Umm an-Nar tomb. Over ten people were needed to lift it into its place.</div>
+      <div class="lang-row">
+        <button class="lang-btn on" id="lEn">English</button>
+        <button class="lang-btn" id="lAr">العربية</button>
+      </div>
+      <button class="story-btn" id="toStory" data-i18n="storyBtn">DISCOVER THE STORY →</button>
+    </div>
+  </div>
+
+  <!-- STORY PAGE -->
+  <div class="page" id="story-page">
+    <div class="story-header">
+      <button class="back-btn" data-back-to="object-page">←</button>
+      <div class="brand" data-i18n="brandStory">The Story</div>
+    </div>
+
+    <div class="timeline">
+      <div class="t-step"><div class="t-dot on" data-story="0">1</div><div class="t-label" data-i18n="tl0">Quarried</div></div>
+      <div class="t-line"></div>
+      <div class="t-step"><div class="t-dot" id="td1" data-story="1">2</div><div class="t-label" data-i18n="tl1">Carved</div></div>
+      <div class="t-line"></div>
+      <div class="t-step"><div class="t-dot" id="td2" data-story="2">3</div><div class="t-label" data-i18n="tl2">Placed</div></div>
+      <div class="t-line"></div>
+      <div class="t-step"><div class="t-dot" id="td3" data-story="3">4</div><div class="t-label" data-i18n="tl3">Lives on</div></div>
+    </div>
+
+    <div class="story-vis">
+      <svg id="storyVis" width="200" height="170" viewBox="0 0 200 170"></svg>
+    </div>
+
+    <div class="story-body">
+      <div class="story-title" id="storyTitle">The quarry at Jebel Haqlah</div>
+      <div class="story-text" id="storyText"></div>
+      <div class="story-nav">
+        <button class="nav-btn" id="storyPrev">←</button>
+        <div class="dots">
+          <div class="dot on" id="sd0"></div><div class="dot" id="sd1"></div><div class="dot" id="sd2"></div><div class="dot" id="sd3"></div>
+        </div>
+        <button class="nav-btn" id="storyNext">→</button>
+      </div>
+      <button class="home-return" data-back="home" data-i18n="backHome">← Back to home</button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
