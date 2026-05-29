@@ -127,7 +127,13 @@ function setText(id, v) { const el = document.getElementById(id); if (el) el.tex
    3. STORY (timeline + localized SVG illustrations)
    ========================================================================= */
 function svgCaption(x, y, text, delay = 0.8) {
-  return `<text class="anim-fade" style="animation-delay:${delay}s" x="${x}" y="${y}" text-anchor="middle" font-size="10" fill="#5C4A32" font-family="Arial,sans-serif" letter-spacing=".06em">${text}</text>`;
+  // Arabic must NOT get letter-spacing: on iOS/WebKit it forces a non-complex
+  // text path that renders RTL text reversed (and it breaks cursive joining
+  // everywhere). Use Cairo + an explicit RTL base direction for Arabic instead.
+  const ar = lang === 'ar';
+  const font = ar ? "'Cairo','Segoe UI',Tahoma,sans-serif" : 'Arial,sans-serif';
+  const extra = ar ? ' direction="rtl" xml:lang="ar"' : ' letter-spacing=".06em"';
+  return `<text class="anim-fade" style="animation-delay:${delay}s" x="${x}" y="${y}" text-anchor="middle" font-size="10" fill="#5C4A32" font-family="${font}"${extra}>${text}</text>`;
 }
 /* Each shape that carries its own transform attribute (rotated rects) is wrapped
    in a <g> so the CSS keyframe transform animates the group while the inner

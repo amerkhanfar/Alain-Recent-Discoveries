@@ -105,7 +105,7 @@ html,body{
 .t-label{font-family:Arial,sans-serif;font-size:8px;letter-spacing:.06em;color:#8B7355;margin-top:5px;text-align:center;}
 .t-line{flex:1;height:.5px;background:#C8B89A;margin-bottom:14px;}
 .story-vis{width:100%;background:#F2EDE0;min-height:200px;display:flex;align-items:center;justify-content:center;padding:24px 20px;margin-top:14px;}
-.story-vis svg{max-width:200px;max-height:180px;}
+.story-vis svg{max-width:200px;max-height:190px;}
 .story-body{padding:18px 22px 30px;width:100%;}
 .story-title{font-family:Arial,sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:#3A2415;font-weight:500;margin-bottom:10px;}
 .story-text{font-family:Arial,sans-serif;font-size:12px;color:#3A2415;line-height:1.8;}
