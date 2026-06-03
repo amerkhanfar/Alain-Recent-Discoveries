@@ -14,7 +14,7 @@ const T = {
     storyBtn: 'DISCOVER THE STORY',
     brandStory: 'The Story',
     tl0: 'Quarried', tl1: 'Carved', tl2: 'Placed', tl3: 'Lives on',
-    backHome: 'START EXPLORING'
+    backHome: 'BACK TO HOME SCREEN'
   },
   ar: {
     dragHint: '↔ اسحب للتدوير',
@@ -24,7 +24,7 @@ const T = {
     storyBtn: 'اكتشف القصة',
     brandStory: 'القصة',
     tl0: 'الاستخراج', tl1: 'النحت', tl2: 'التركيب', tl3: 'الإرث',
-    backHome: 'ابدأ الاستكشاف'
+    backHome: 'العودة للصفحة الرئيسية'
   }
 };
 

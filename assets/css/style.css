@@ -120,7 +120,7 @@ html,body{
 .story-btn:hover{opacity:.85;}
 
 /* ── STORY PAGE ── */
-#story-page{padding:0;}
+#story-page{padding:0 0 30px;}
 .story-header{width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 22px 0;}
 .timeline{display:flex;align-items:center;gap:0;width:100%;padding:20px 22px 0;}
 .t-step{display:flex;flex-direction:column;align-items:center;flex:1;}
@@ -143,7 +143,7 @@ html,body{
 .dots{display:flex;gap:6px;}
 .dot{width:6px;height:6px;border-radius:50%;background:#C8B89A;}
 .dot.on{background:#371107;}
-.story-start{margin-top:14px;}
+.story-start{width:auto;margin-top:auto;padding:9px 28px;font-size:11px;}
 
 /* ── ARABIC / RTL ── */
 #app.lang-ar{direction:rtl;}
