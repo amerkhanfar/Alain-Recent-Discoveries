@@ -21,24 +21,19 @@
 
   <!-- HOME PAGE -->
   <div class="page active" id="home">
-    <div style="text-align:center;">
-      <div class="home-kicker" data-i18n="kicker">Al Ain National Museum</div>
-      <div class="home-title-en">Recent Discoveries</div>
-      <div class="home-title-ar">أحدث الاكتشافات</div>
-    </div>
+    <!-- logo stays on top through the reveal; click cue fades out on tap -->
+    <img class="home-logo" src="assets/media/logo.png"
+         alt="Recent Discoveries — أحدث الاكتشافات" draggable="false" />
+    <img id="tapCue" class="home-click" src="assets/media/clickicon.png"
+         alt="Tap to reveal the discovery" draggable="false" />
 
-    <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
-      <div class="canvas-wrap" id="canvasWrap">
-        <canvas id="blockCanvas" width="300" height="300"></canvas>
-        <canvas id="homeGl"></canvas>
-        <img id="homeFallback" alt="Stone Door artifact" />
-      </div>
-      <div class="tap-cue" id="tapCue" data-i18n="tapCue">Tap to reveal the discovery</div>
-    </div>
+    <!-- the discovery, revealed in place when the screen is tapped -->
+    <canvas id="homeGl"></canvas>
+    <img id="homeFallback" alt="Stone Door artifact" />
 
     <div class="home-btns" id="homeBtns" style="opacity:0;pointer-events:none;transition:opacity .5s;">
-      <button class="btn-pill dark" id="startEn">START EXPLORING</button>
-      <button class="btn-pill" id="startAr" style="direction:rtl;font-family:'Cairo',sans-serif;font-size:15px;">ابدأ الاستكشاف</button>
+      <button class="btn-pill" id="startAr" style="direction:rtl;font-size:15px;">ابدأ الاستكشاف</button>
+      <button class="btn-pill" id="startEn">START EXPLORING</button>
     </div>
   </div>
 
@@ -46,7 +41,7 @@
   <div class="page" id="object-page">
     <div class="obj-header">
       <button class="back-btn" data-back>←</button>
-      <div class="brand" data-i18n="brandDiscoveries">Recent<br>Discoveries</div>
+      <img class="header-logo" src="assets/media/logo.png" alt="Recent Discoveries — أحدث الاكتشافات" draggable="false" />
     </div>
     <div class="obj-stage">
       <canvas id="objGl"></canvas>
@@ -54,27 +49,18 @@
       <div class="drag-hint" data-i18n="dragHint">↔ Drag to rotate</div>
     </div>
     <div class="obj-body">
-      <div class="discovery-label" data-i18n="discoveryLabel">Discovery of the Month</div>
-      <div class="obj-name" id="objName">The Doorstone of the 'Phoenix' Tomb</div>
+      <div class="obj-name" id="objName">The Stone Door of an Ancient Tomb</div>
       <div class="divider"></div>
-      <div class="meta"><span class="meta-k" data-i18n="kDate">Date</span><span class="meta-v" id="vDate">c. 2300 BCE — Umm an-Nar period</span></div>
+      <div class="meta"><span class="meta-k" data-i18n="kDate">Age</span><span class="meta-v" id="vDate">More than 4,300 years ago</span></div>
       <div class="meta"><span class="meta-k" data-i18n="kMaterial">Material</span><span class="meta-v" id="vMaterial">Limestone, Jebel Haqlah</span></div>
-      <div class="meta"><span class="meta-k" data-i18n="kDimensions">Dimensions</span><span class="meta-v" id="vDimensions">126 × 73 × 20 cm</span></div>
-      <div class="meta"><span class="meta-k" data-i18n="kCollection">Collection</span><span class="meta-v" id="vCollection">Al Ain National Museum</span></div>
       <div class="divider"></div>
-      <div id="desc" class="desc">A masterful stone mason sculpted this doorstone from a sizeable limestone block quarried at Jebel Haqlah over 4,300 years ago, to be placed at the entrance of a monumental Umm an-Nar tomb. Over ten people were needed to lift it into its place.</div>
-      <div class="lang-row">
-        <button class="lang-btn on" id="lEn">English</button>
-        <button class="lang-btn" id="lAr">العربية</button>
-      </div>
-      <button class="story-btn" id="toStory" data-i18n="storyBtn">DISCOVER THE STORY →</button>
+      <button class="story-btn" id="toStory" data-i18n="storyBtn">DISCOVER THE STORY</button>
     </div>
   </div>
 
   <!-- STORY PAGE -->
   <div class="page" id="story-page">
     <div class="story-header">
-      <button class="back-btn" data-back-to="object-page">←</button>
       <div class="brand" data-i18n="brandStory">The Story</div>
     </div>
 
@@ -90,6 +76,7 @@
 
     <div class="story-vis">
       <svg id="storyVis" width="200" height="184" viewBox="0 0 200 184"></svg>
+      <img id="storyImg" src="assets/media/tomb.jpeg" alt="" draggable="false" />
       <div class="story-video" id="storyVideo" style="display:none">
         <div class="vid-wrap" id="vidWrap">
           <video id="vid" playsinline webkit-playsinline preload="metadata" muted loop>
@@ -112,7 +99,7 @@
         </div>
         <button class="nav-btn" id="storyNext">→</button>
       </div>
-      <button class="home-return" data-back="home" data-i18n="backHome">← Back to home</button>
+      <button class="btn-pill story-start" data-back="home" data-i18n="backHome">START EXPLORING</button>
     </div>
   </div>
 

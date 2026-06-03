@@ -7,68 +7,54 @@ import { SFX } from './sfx.js';
    ========================================================================= */
 const T = {
   en: {
-    kicker: 'Al Ain National Museum',
-    tapCue: 'Tap to reveal the discovery',
-    brandDiscoveries: 'Recent<br>Discoveries',
     dragHint: '↔ Drag to rotate',
-    discoveryLabel: 'Discovery of the Month',
-    objName: "The Doorstone of the 'Phoenix' Tomb",
-    kDate: 'Date',        vDate: 'c. 2300 BCE — Umm an-Nar period',
+    objName: 'The Stone Door of an Ancient Tomb',
+    kDate: 'Age',        vDate: 'More than 4,300 years ago',
     kMaterial: 'Material', vMaterial: 'Limestone, Jebel Haqlah',
-    kDimensions: 'Dimensions', vDimensions: '126 × 73 × 20 cm',
-    kCollection: 'Collection', vCollection: 'Al Ain National Museum',
-    desc: 'A masterful stone mason sculpted this doorstone from a sizeable limestone block quarried at Jebel Haqlah over 4,300 years ago, to be placed at the entrance of a monumental Umm an-Nar tomb. Over ten people were needed to lift it into its place.',
-    storyBtn: 'DISCOVER THE STORY →',
+    storyBtn: 'DISCOVER THE STORY',
     brandStory: 'The Story',
     tl0: 'Quarried', tl1: 'Carved', tl2: 'Placed', tl3: 'Lives on',
-    backHome: '← Back to home'
+    backHome: 'START EXPLORING'
   },
   ar: {
-    kicker: 'متحف العين الوطني',
-    tapCue: 'اضغط للكشف عن الاكتشاف',
-    brandDiscoveries: 'أحدث<br>الاكتشافات',
     dragHint: '↔ اسحب للتدوير',
-    discoveryLabel: 'اكتشاف الشهر',
-    objName: 'حجر باب «مقبرة العنقاء»',
-    kDate: 'التاريخ',     vDate: 'حوالي 2300 ق.م — فترة أم النار',
-    kMaterial: 'المادة',  vMaterial: 'حجر جيري، جبل حقلة',
-    kDimensions: 'الأبعاد', vDimensions: '126 × 73 × 20 سم',
-    kCollection: 'المجموعة', vCollection: 'متحف العين الوطني',
-    desc: 'قام نحّاتٌ بارع بنحت هذا الحجر من كتلة كبيرة من الحجر الجيري المستخرج من جبل حقلة قبل أكثر من 4300 عام، ليُوضع عند مدخل مقبرة ضخمة من مقابر أم النار. وقد لزم أكثر من عشرة أشخاص لرفعه إلى موضعه.',
-    storyBtn: 'اكتشف القصة ←',
+    objName: 'باب حجري لمدفن أثري',
+    kDate: 'العمر',     vDate: 'منذ أكثر من 4,300 عام',
+    kMaterial: 'المادة',  vMaterial: 'الحجر الجيري، جبل حقلة',
+    storyBtn: 'اكتشف القصة',
     brandStory: 'القصة',
     tl0: 'الاستخراج', tl1: 'النحت', tl2: 'التركيب', tl3: 'الإرث',
-    backHome: '→ العودة للرئيسية'
+    backHome: 'ابدأ الاستكشاف'
   }
 };
 
 const STORIES = {
   en: [
-    { title: 'The quarry at Jebel Haqlah',
-      text: 'Over 4,300 years ago, a skilled stone mason selected a sizeable limestone block from the quarry at Jebel Haqlah. The raw stone was carefully assessed — its weight, grain, and natural fracture lines all considered before the first strike.',
+    { title: 'Born from the Mountain',
+      text: 'More than 4,300 years ago, this stone door was carefully carved from a huge limestone block quarried from the nearby Jebel Haqlah known for its high-quality stone.',
       cap: 'Jebel Haqlah limestone' },
-    { title: 'Carved with precision',
-      text: 'The angles were carved so precisely that stone blocks would fit together like giant puzzle pieces. Each exterior angle aligned perfectly with adjacent limestone blocks, with every slab weighing several tons. The intricate craftsmanship may hold deeper symbolic meaning.',
+    { title: 'Guardian of the Ancestors',
+      text: 'For nearly a thousand years, this stone door functioned as the passage into the afterlife in a perfectly circular Umm an-Nar tomb, with hundreds of burials passing through its opening.',
       cap: 'Precision carving' },
-    { title: 'Placed in the tomb',
-      text: 'Over ten people were needed to lift the doorstone to its original place in a perfectly circular Umm an-Nar tomb — one of several similar tombs in the Al Ain area. Each placed with ceremony and precision.',
+    { title: 'A Tomb Reborn',
+      text: 'After several hundred years, c. 1500 BC) the stone door, together with other carefully carved ashlar blocks, were placed in a newly built subterranean Wadi Suq tomb that came to house hundreds of individuals over time.',
       cap: '10+ people to lift' },
-    { title: 'Witness to centuries',
-      text: "Here this doorstone witnessed the burial of hundreds of individuals over centuries — adults and children, men and women. Family members placed their loved ones through the tomb's entrance, joining them with the ancestors within.",
+    { title: 'Rediscovered',
+      text: 'Only this year, the Wadi Suq tomb was rediscovered, and although disturbed in the past, the stone door was found inside the tomb and carefully lifted to be further studied and share its rich history.',
       cap: 'Hundreds of burials over centuries' }
   ],
   ar: [
-    { title: 'محجر جبل حقلة',
-      text: 'قبل أكثر من 4300 عام، اختار نحّاتٌ ماهر كتلة كبيرة من الحجر الجيري من محجر جبل حقلة. قُيّمت الكتلة الخام بعناية — وزنها واتجاه طبقاتها وخطوط تصدّعها الطبيعية — قبل الضربة الأولى.',
+    { title: 'نُحت من جبل حقلة',
+      text: 'منذ أكثر من 4,300 عام، نُحت هذا الباب الحجري بعناية من كتلة كبيرة من الحجر الجيري استُخرجت من جبل حقلة القريب، المعروف بجودة أحجاره.',
       cap: 'حجر جيري من جبل حقلة' },
-    { title: 'نُحت بدقة',
-      text: 'نُحتت الزوايا بدقة بالغة حتى تتلاءم الكتل الحجرية معاً كقطع أحجية عملاقة. تطابقت كل زاوية خارجية تماماً مع الكتل الجيرية المجاورة، ويزن كل لوح عدة أطنان. وقد تحمل هذه الحرفية الدقيقة معنى رمزياً أعمق.',
+    { title: 'حارس الأسلاف',
+      text: 'على مدى ما يقرب من ألف عام، كان هذا الباب الحجري يُستخدم ممرًا إلى الحياة الآخرة في مدفن دائري من فترة أم النار، حيث مرّت من خلال هذا الباب مئات الجنائز.',
       cap: 'نحتٌ دقيق' },
-    { title: 'وُضع في المقبرة',
-      text: 'لزم أكثر من عشرة أشخاص لرفع حجر الباب إلى موضعه الأصلي في مقبرة دائرية تماماً من مقابر أم النار — واحدة من عدة مقابر مماثلة في منطقة العين. وُضع كلٌّ منها بمراسم ودقة.',
+    { title: 'مدفن أعيد إحياؤه',
+      text: 'بعد مئات السنين (نحو 1500 قبل الميلاد) وُضع هذا الباب الحجري إلى جانب كتل حجرية أخرى منحوتة بعناية في مقبرة تحت الأرض تعود إلى فترة وادي سوق. وأصبحت هذه المقبرة تضم رفات المئات من الأفراد مع مرور الوقت.',
       cap: 'أكثر من 10 أشخاص للرفع' },
-    { title: 'شاهدٌ على القرون',
-      text: 'هنا شهد حجر الباب دفن مئات الأفراد على مرّ القرون — بالغين وأطفالاً، رجالاً ونساءً. كان أفراد العائلة يضعون أحباءهم عبر مدخل المقبرة، ليجمعوهم مع الأسلاف في الداخل.',
+    { title: 'إعادة الاكتشاف',
+      text: 'أُعيد اكتشاف مقبرة وادي سوق هذه خلال أعمال أثرية حديثة. وعلى الرغم من تعرضها لبعض الأضرار في الماضي، إلا أنه قد عُثر بداخلها على هذا الباب الحجري، ثم رُفع بعناية لإجراء المزيد من الدراسة عليه تمهيدًا لعرضه على الجمهور.',
       cap: 'مئات الدفنات عبر القرون' }
   ]
 };
@@ -100,18 +86,10 @@ function applyLang(l) {
   setText('objName', t.objName);
   setText('vDate', t.vDate);
   setText('vMaterial', t.vMaterial);
-  setText('vDimensions', t.vDimensions);
-  setText('vCollection', t.vCollection);
-  setText('desc', t.desc);
-
-  // language toggle active state
-  document.getElementById('lEn').className = 'lang-btn' + (l === 'en' ? ' on' : '');
-  document.getElementById('lAr').className = 'lang-btn' + (l === 'ar' ? ' on' : '');
 
   // back arrows follow reading direction
   const backArrow = l === 'ar' ? '→' : '←';
   document.querySelector('#object-page .back-btn').textContent = backArrow;
-  document.querySelector('#story-page .back-btn').textContent = backArrow;
 
   // story prev/next arrows mirror in RTL (prev points the way you came, next points forward)
   document.getElementById('storyPrev').textContent = l === 'ar' ? '→' : '←';
@@ -183,6 +161,12 @@ const DRAW = [
     ${svgCaption(100, 170, cap, 1)}`
 ];
 
+/* steps that play a video — source depends on the chosen language */
+const STEP_VIDEO = {
+  1: { en: 'assets/media/interview_Michel_De_Vreeze.mp4', ar: 'assets/media/interview_ar.mp4' },
+  2: { en: 'assets/media/3danimation_door_placement_eng.mp4', ar: 'assets/media/3danimation_door_placement_arabic.mp4' }
+};
+
 function setStory(i) {
   storyIdx = i;
   const s = STORIES[lang][i];
@@ -194,23 +178,43 @@ function setStory(i) {
     if (td) td.className = 't-dot' + (j === i ? ' on' : '');
   }
 
-  // Step 2 (index 1) plays the interview video; every other step shows its animated SVG.
+  // no looping: hide prev on the first step, next on the last step
+  document.getElementById('storyPrev').style.visibility = i === 0 ? 'hidden' : 'visible';
+  document.getElementById('storyNext').style.visibility = i === 3 ? 'hidden' : 'visible';
+
+  // Step 1 (index 0) shows a full-width photo; step 2 (index 1) plays the
+  // interview video; every other step shows its animated SVG.
   const svg = document.getElementById('storyVis');
   const vbox = document.getElementById('storyVideo');
+  const img = document.getElementById('storyImg');
+  const vis = document.querySelector('.story-vis');
   const vid = document.getElementById('vid');
-  if (i === 1 && !videoFailed) {
-    svg.style.display = 'none';
+
+  if (vid) vid.pause();
+  vbox.style.display = 'none';
+  svg.style.display = 'none';
+  img.style.display = 'none';
+  vis.classList.remove('image-mode', 'video-mode');
+
+  const imgSrc = i === 0 ? 'assets/media/tomb.jpeg' : i === 3 ? 'assets/media/door.jpg' : null;
+  const vidConf = STEP_VIDEO[i];
+  if (imgSrc) {
+    img.src = imgSrc;
+    img.style.display = 'block';
+    vis.classList.add('image-mode');
+  } else if (vidConf && !videoFailed) {
+    const src = vidConf[lang] || vidConf.en;
+    if (vid && !vid.src.endsWith(src.split('/').pop())) { vid.src = src; vid.load(); }
     vbox.style.display = 'flex';
+    vis.classList.add('video-mode');
     if (vid) { const p = vid.play(); if (p && p.catch) p.catch(() => {}); }
   } else {
-    if (vid) vid.pause();
-    vbox.style.display = 'none';
     svg.style.display = 'block';
     svg.innerHTML = DRAW[i](s.cap);   // re-inject markup to replay entrance animations
   }
 }
-const nextStory = () => { setStory((storyIdx + 1) % 4); SFX.step(storyIdx); };
-const prevStory = () => { setStory((storyIdx + 3) % 4); SFX.step(storyIdx); };
+const nextStory = () => { if (storyIdx < 3) { setStory(storyIdx + 1); SFX.step(storyIdx); } };
+const prevStory = () => { if (storyIdx > 0) { setStory(storyIdx - 1); SFX.step(storyIdx); } };
 
 /* =========================================================================
    4. PAGE NAVIGATION
@@ -230,92 +234,26 @@ function goTo(id) {
 }
 
 /* =========================================================================
-   5. 2D BLOCK REVEAL ANIMATION  (home)
+   5. HOME REVEAL  (tap anywhere → fade out the logo/cue, scale the artifact in)
    ========================================================================= */
-const canvas = document.getElementById('blockCanvas');
-const ctx = canvas.getContext('2d');
-const W = 300, H = 300;
-let blocks = [];
-let revealed = false, animating = false;
-const STONE_COLORS = ['#C4AD8A', '#B89E7A', '#A8926E', '#D4C4A0', '#BCA882', '#CAB88E'];
+let revealed = false;
 
-function makeBlocks() {
-  blocks = [];
-  const cols = 5, rows = 5, bw = W / cols, bh = H / rows;
-  for (let r = 0; r < rows; r++)
-    for (let c = 0; c < cols; c++)
-      blocks.push({
-        x: c * bw + bw / 2, y: r * bh + bh / 2, w: bw - 3, h: bh - 3,
-        ox: c * bw + bw / 2, oy: r * bh + bh / 2,
-        rot: (Math.random() - .5) * .3, alpha: 1,
-        color: STONE_COLORS[(Math.random() * STONE_COLORS.length) | 0]
-      });
-}
-function drawBlocks() {
-  ctx.clearRect(0, 0, W, H);
-  blocks.forEach(b => {
-    ctx.save();
-    ctx.globalAlpha = b.alpha;
-    ctx.translate(b.x, b.y);
-    ctx.rotate(b.rot);
-    ctx.fillStyle = b.color;
-    ctx.beginPath();
-    ctx.roundRect(-b.w / 2, -b.h / 2, b.w, b.h, 4);
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(90,70,40,0.15)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    ctx.restore();
-  });
-}
-let floatT = 0;
-function floatAnim() {
-  if (revealed || animating) return;
-  floatT += 0.02;
-  blocks.forEach((b, i) => {
-    b.rot = Math.sin(floatT + i * .7) * .04;
-    b.x = b.ox + Math.sin(floatT + i * .5) * 1.5;
-    b.y = b.oy + Math.cos(floatT + i * .6) * 1.5;
-  });
-  drawBlocks();
-  requestAnimationFrame(floatAnim);
-}
 function triggerReveal() {
-  if (revealed || animating) return;
-  animating = true;
+  if (revealed) return;
+  revealed = true;
   SFX.reveal();
-  document.getElementById('tapCue').classList.add('hide');
-  const targets = blocks.map(() => ({
-    tx: (Math.random() - .5) * 500, ty: (Math.random() - .5) * 500, tr: (Math.random() - .5) * 3
-  }));
-  let start = null; const dur = 800;
-  function scatter(ts) {
-    if (!start) start = ts;
-    const p = Math.min((ts - start) / dur, 1);
-    const e = 1 - Math.pow(1 - p, 3);
-    ctx.clearRect(0, 0, W, H);
-    blocks.forEach((b, i) => {
-      b.x = b.ox + targets[i].tx * e;
-      b.y = b.oy + targets[i].ty * e;
-      b.rot = targets[i].tr * e;
-      b.alpha = 1 - e;
-    });
-    drawBlocks();
-    if (p < 1) requestAnimationFrame(scatter);
-    else {
-      ctx.clearRect(0, 0, W, H);
-      revealed = true; animating = false;
-      homeViewer.active = true;
-      (modelFailed ? document.getElementById('homeFallback') : document.getElementById('homeGl'))
-        .classList.add('show');
-      setTimeout(() => {
-        const btns = document.getElementById('homeBtns');
-        btns.style.opacity = '1';
-        btns.style.pointerEvents = 'auto';
-      }, 800);
-    }
-  }
-  requestAnimationFrame(scatter);
+  // slide the logo up to the top and fade out the click cue
+  document.getElementById('home').classList.add('revealed');
+  // bring the artifact in and start its idle spin
+  homeViewer.active = true;
+  (modelFailed ? document.getElementById('homeFallback') : document.getElementById('homeGl'))
+    .classList.add('show');
+  // reveal the two start buttons once the artifact has settled
+  setTimeout(() => {
+    const btns = document.getElementById('homeBtns');
+    btns.style.opacity = '1';
+    btns.style.pointerEvents = 'auto';
+  }, 900);
 }
 
 /* =========================================================================
@@ -503,17 +441,15 @@ function fitToScreen() {
 /* =========================================================================
    8. WIRE-UP
    ========================================================================= */
-document.getElementById('canvasWrap').addEventListener('click', triggerReveal);
+/* tap anywhere on the home screen → reveal the discovery */
+document.getElementById('home').addEventListener('click', triggerReveal);
 document.getElementById('startEn').addEventListener('click', () => { SFX.chime(); applyLang('en'); goTo('object-page'); });
 document.getElementById('startAr').addEventListener('click', () => { SFX.chime(); applyLang('ar'); goTo('object-page'); });
-document.getElementById('lEn').addEventListener('click', () => { SFX.click(); applyLang('en'); });
-document.getElementById('lAr').addEventListener('click', () => { SFX.click(); applyLang('ar'); });
 document.getElementById('toStory').addEventListener('click', () => { SFX.transition(); goTo('story-page'); });
 document.getElementById('storyPrev').addEventListener('click', prevStory);
 document.getElementById('storyNext').addEventListener('click', nextStory);
 document.querySelector('#object-page .back-btn').addEventListener('click', () => { SFX.back(); goTo('home'); });
-document.querySelector('#story-page .back-btn').addEventListener('click', () => { SFX.back(); goTo('object-page'); });
-document.querySelector('.home-return').addEventListener('click', () => { SFX.back(); goTo('home'); });
+document.querySelector('.story-start').addEventListener('click', () => { SFX.back(); goTo('home'); });
 document.querySelectorAll('.t-dot[data-story]').forEach(d =>
   d.addEventListener('click', () => { setStory(+d.getAttribute('data-story')); SFX.step(storyIdx); }));
 
@@ -596,10 +532,13 @@ if (vidEl) {
 // If the video file is missing/unsupported, fall back to the animated SVG for step 2.
 if (vidEl) vidEl.addEventListener('error', () => {
   videoFailed = true;
-  if (storyIdx === 1) setStory(1);
+  if (STEP_VIDEO[storyIdx]) setStory(storyIdx);
 });
 
 window.addEventListener('resize', fitToScreen);
+
+/* kiosk: suppress the right-click / long-press context menu */
+window.addEventListener('contextmenu', (e) => e.preventDefault());
 
 /* unlock the audio context on the very first user interaction (autoplay policy) */
 function unlockAudioOnce() {
@@ -610,10 +549,7 @@ function unlockAudioOnce() {
   window.addEventListener(ev, unlockAudioOnce, { capture: true, passive: true }));
 
 /* boot */
-makeBlocks();
-drawBlocks();
 applyLang('en');
 setStory(0);
-floatAnim();
 loop();
 fitToScreen();
