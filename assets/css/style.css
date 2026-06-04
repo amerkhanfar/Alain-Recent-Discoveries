@@ -129,7 +129,9 @@ html,body{
 .t-dot:hover{background:#8B7355;color:#EDDFC6;}
 .t-label{font-family:Arial,sans-serif;font-size:8px;letter-spacing:.06em;color:#8B7355;margin-top:5px;text-align:center;}
 .t-line{flex:1;height:.5px;background:#C8B89A;margin-bottom:14px;}
-.story-vis{width:100%;background:#EDDFC6;min-height:200px;display:flex;align-items:center;justify-content:center;padding:24px 20px;margin-top:14px;}
+.story-vis{position:relative;width:100%;background:#EDDFC6;min-height:200px;display:flex;align-items:center;justify-content:center;padding:24px 20px;margin-top:14px;}
+#app .img-cap{display:none;position:absolute;bottom:12px;left:16px;right:16px;color:#fff;font-size:10px;line-height:1.35;text-align:left;text-shadow:0 1px 4px rgba(0,0,0,.65);pointer-events:none;}
+#app.lang-ar .img-cap{text-align:right;direction:rtl;}
 .story-vis svg{max-width:200px;max-height:190px;}
 /* step 1: full-width photo instead of the animated SVG */
 .story-vis.image-mode{padding:0;}

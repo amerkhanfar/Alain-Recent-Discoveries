@@ -11,6 +11,7 @@ const T = {
     objName: 'The Stone Door of an Ancient Tomb',
     kDate: 'Age',        vDate: 'More than 4,300 years ago',
     kMaterial: 'Material', vMaterial: 'Limestone, Jebel Haqlah',
+    imgCap1: 'A photo of Hili Grand Tomb for comparison only.',
     storyBtn: 'DISCOVER THE STORY',
     brandStory: 'The Story',
     tl0: 'Quarried', tl1: 'Carved', tl2: 'Placed', tl3: 'Lives on',
@@ -21,6 +22,7 @@ const T = {
     objName: 'باب حجري لمدفن أثري',
     kDate: 'العمر',     vDate: 'منذ أكثر من 4,300 عام',
     kMaterial: 'المادة',  vMaterial: 'الحجر الجيري، جبل حقلة',
+    imgCap1: 'صورة مرجعية لمدفن هيلي الكبير للمقارنة فقط.',
     storyBtn: 'اكتشف القصة',
     brandStory: 'القصة',
     tl0: 'الاستخراج', tl1: 'النحت', tl2: 'التركيب', tl3: 'الإرث',
@@ -37,7 +39,7 @@ const STORIES = {
       text: 'For nearly a thousand years, this stone door functioned as the passage into the afterlife in a perfectly circular Umm an-Nar tomb, with hundreds of burials passing through its opening.',
       cap: 'Precision carving' },
     { title: 'A Tomb Reborn',
-      text: 'After several hundred years, c. 1500 BC) the stone door, together with other carefully carved ashlar blocks, were placed in a newly built subterranean Wadi Suq tomb that came to house hundreds of individuals over time.',
+      text: 'After several hundred years, (c. 1500 BC) the stone door, together with other carefully carved ashlar blocks, were placed in a newly built subterranean Wadi Suq tomb that came to house hundreds of individuals over time.',
       cap: '10+ people to lift' },
     { title: 'Rediscovered',
       text: 'Only this year, the Wadi Suq tomb was rediscovered, and although disturbed in the past, the stone door was found inside the tomb and carefully lifted to be further studied and share its rich history.',
@@ -48,13 +50,13 @@ const STORIES = {
       text: 'منذ أكثر من 4,300 عام، نُحت هذا الباب الحجري بعناية من كتلة كبيرة من الحجر الجيري استُخرجت من جبل حقلة القريب، المعروف بجودة أحجاره.',
       cap: 'حجر جيري من جبل حقلة' },
     { title: 'حارس الأسلاف',
-      text: 'على مدى ما يقرب من ألف عام، كان هذا الباب الحجري يُستخدم ممرًا إلى الحياة الآخرة في مدفن دائري من فترة أم النار، حيث مرّت من خلال هذا الباب مئات الجنائز.',
+      text: 'على مدى ما يقرب من ألف عام، كان هذا الباب الحجري يُستخدم ممرًا إلى الحياة الآخرة في مدفن دائري من فترة أم النار، حيث مرّت من خلاله مئات الجنائز.',
       cap: 'نحتٌ دقيق' },
     { title: 'مدفن أعيد إحياؤه',
-      text: 'بعد مئات السنين (نحو 1500 قبل الميلاد) وُضع هذا الباب الحجري إلى جانب كتل حجرية أخرى منحوتة بعناية في مقبرة تحت الأرض تعود إلى فترة وادي سوق. وأصبحت هذه المقبرة تضم رفات المئات من الأفراد مع مرور الوقت.',
+      text: 'بعد مئات السنين (نحو 1500 قبل الميلاد) وُضع هذا الباب الحجري إلى جانب كتل حجرية أخرى منحوتة بعناية في مدفن تحت الأرض يعود إلى فترة وادي سوق. وأصبح هذا المدفن يضم رفات المئات من الأفراد مع مرور الوقت.',
       cap: 'أكثر من 10 أشخاص للرفع' },
     { title: 'إعادة الاكتشاف',
-      text: 'أُعيد اكتشاف مقبرة وادي سوق هذه خلال أعمال أثرية حديثة. وعلى الرغم من تعرضها لبعض الأضرار في الماضي، إلا أنه قد عُثر بداخلها على هذا الباب الحجري، ثم رُفع بعناية لإجراء المزيد من الدراسة عليه تمهيدًا لعرضه على الجمهور.',
+      text: 'أُعيد اكتشاف مدفن وادي سوق هذا خلال أعمال أثرية حديثة. وعلى الرغم من تعرضه لبعض الأضرار في الماضي، إلا أنه قد عُثر بداخله على هذا الباب الحجري، ثم رُفع بحرص لإجراء المزيد من الدراسة عليه تمهيدًا لعرضه على الجمهور',
       cap: 'مئات الدفنات عبر القرون' }
   ]
 };
@@ -163,7 +165,7 @@ const DRAW = [
 
 /* steps that play a video — source depends on the chosen language */
 const STEP_VIDEO = {
-  1: { en: 'assets/media/interview_Michel_De_Vreeze.mp4', ar: 'assets/media/interview_ar.mp4' },
+  1: { en: 'assets/media/interview.mp4', ar: 'assets/media/interview_ar.mp4' },
   2: { en: 'assets/media/3danimation_door_placement_eng.mp4', ar: 'assets/media/3danimation_door_placement_arabic.mp4' }
 };
 
@@ -187,6 +189,7 @@ function setStory(i) {
   const svg = document.getElementById('storyVis');
   const vbox = document.getElementById('storyVideo');
   const img = document.getElementById('storyImg');
+  const imgCap = document.getElementById('imgCap');
   const vis = document.querySelector('.story-vis');
   const vid = document.getElementById('vid');
 
@@ -194,6 +197,7 @@ function setStory(i) {
   vbox.style.display = 'none';
   svg.style.display = 'none';
   img.style.display = 'none';
+  imgCap.style.display = 'none';
   vis.classList.remove('image-mode', 'video-mode');
 
   const imgSrc = i === 0 ? 'assets/media/tomb.jpeg' : i === 3 ? 'assets/media/door.jpg' : null;
@@ -201,6 +205,7 @@ function setStory(i) {
   if (imgSrc) {
     img.src = imgSrc;
     img.style.display = 'block';
+    imgCap.style.display = i === 0 ? 'block' : 'none';
     vis.classList.add('image-mode');
   } else if (vidConf && !videoFailed) {
     const src = vidConf[lang] || vidConf.en;
